@@ -1,57 +1,89 @@
-
 # Cloud-Based Smart Document Management System
 
-## Project Overview
-The Cloud-Based Smart Document Management System is a serverless cloud application that stores documents in Amazon S3 and automatically sends email notifications whenever a new document is uploaded.
+A serverless AWS application that stores documents in Amazon S3 and sends email notifications through Amazon SNS using AWS Lambda.
 
-## Problem Statement
-Managing uploaded documents manually and tracking new uploads can be difficult. This project automates document upload notifications using AWS cloud services.
+## 1. Project Overview
 
-## Objectives
-- Store documents securely in Amazon S3.
-- Detect new document uploads automatically.
+The Cloud-Based Smart Document Management System automates document upload notifications using AWS cloud services. When a new document is uploaded to the configured S3 bucket, an S3 event is configured to invoke an AWS Lambda function. The function processes the event and publishes a notification to Amazon SNS, which delivers an email to subscribed users.
+
+## 2. Problem Statement
+
+Manually monitoring document uploads can be time-consuming. This project demonstrates how AWS serverless services can be integrated to simplify document storage and upload notifications.
+
+## 3. Objectives
+
+- Store documents in Amazon S3.
+- Configure automatic detection of new document uploads.
 - Process upload events using AWS Lambda.
 - Send email notifications using Amazon SNS.
-- Monitor execution through Amazon CloudWatch.
+- Monitor Lambda execution using Amazon CloudWatch.
 
-## AWS Services Used
+## 4. AWS Services Used
 
 | AWS Service | Purpose |
 |---|---|
 | Amazon S3 | Stores uploaded documents |
 | AWS Lambda | Processes S3 upload events |
 | Amazon SNS | Sends email notifications |
-| Amazon CloudWatch | Monitors Lambda execution logs |
+| Amazon CloudWatch | Stores execution logs |
 
-## System Architecture
+**Core services:** Amazon S3, AWS Lambda and Amazon SNS. CloudWatch is used for supporting monitoring.
 
-1. User uploads a document to Amazon S3.
-2. S3 generates an ObjectCreated event.
-3. AWS Lambda is automatically triggered.
+## 5. System Architecture
+
+![System Architecture](architecture.png)
+
+### Workflow
+
+1. A user uploads a document to the Amazon S3 bucket.
+2. Amazon S3 generates an ObjectCreated event.
+3. The configured event trigger invokes AWS Lambda.
 4. Lambda extracts the bucket name and uploaded file name.
-5. Lambda publishes a notification to Amazon SNS.
-6. SNS sends an email notification to the subscribed email address.
-7. CloudWatch stores Lambda execution logs.
+5. Lambda publishes a notification to the SNS topic.
+6. Amazon SNS sends an email to the confirmed subscriber.
+7. Amazon CloudWatch stores Lambda execution logs.
 
-## Implementation
-- Created an S3 bucket named `smartdocvault2026pooja`.
-- Created an SNS topic named `DocumentUploadNotifications`.
-- Configured an email subscription.
-- Developed a Python Lambda function named `document-upload-processor`.
-- Configured an S3 ObjectCreated event trigger.
-- Integrated Lambda with SNS using the SNS topic ARN.
+## 6. Implementation Details
 
-## Testing and Results
-The system was tested by uploading a text file named `Hi.txt` to the S3 bucket.
+- **S3 Bucket:** `smartdocvault2026pooja`
+- **SNS Topic:** `DocumentUploadNotifications`
+- **Lambda Function:** `document-upload-processor`
+- **Runtime:** Python
+- **Event Type:** `s3:ObjectCreated:*`
+- **Notification Method:** Email through Amazon SNS
 
-The Lambda function processed the upload event and Amazon SNS delivered an email notification.
+The Lambda function uses Python and Boto3 to publish document upload information to the configured SNS topic.
 
-**Result:** Successful email notification received after document upload.
+## 7. Source Code
 
-## Conclusion
-The project demonstrates an automated, serverless document notification workflow using AWS cloud services. It reduces manual monitoring and provides immediate email notifications when new documents are uploaded.
+- [Lambda Function Code](lambda_function.py)
+- [System Architecture](architecture.png)
 
-## Technologies
+## 8. Testing and Results
+
+The Lambda function was tested using a sample S3 event payload. The test execution returned a successful response, and an email notification was received through Amazon SNS.
+
+The S3 ObjectCreated trigger configuration is also included in the project evidence.
+
+## 9. Project Screenshots
+
+The following screenshots document the AWS implementation:
+
+| Screenshot | Description |
+|---|---|
+| [01 - S3 Bucket Objects](screenshots/01_S3_Bucket_Objects.png) | Uploaded documents in S3 |
+| [02 - SNS Topic](screenshots/02_SNS_Topic_and_Confirmed_Subscription.png) | SNS topic and confirmed subscription |
+| [03 - SNS Subscription](screenshots/03_SNS_Subscription_Details.png) | Email subscription details |
+| [04 - Lambda Overview](screenshots/04_Lambda_Function_Overview_and_Test_Tab.png) | Lambda function overview |
+| [05 - Lambda Code](screenshots/05_Lambda_Function_Code.png) | Python function code |
+| [06 - S3 Trigger](screenshots/06_Lambda_S3_Trigger_Configuration.png) | S3 trigger configuration |
+| [07 - Lambda Test](screenshots/07_Lambda_Test_Success_Result.png) | Successful test execution |
+| [08 - Email Notification](screenshots/08_Email_Notification_Received.png) | SNS email notification |
+| [09 - CloudWatch](screenshots/09_CloudWatch_Log_Group_Details.png) | CloudWatch log group |
+| [10 - Lambda Overview](screenshots/10_Lambda_Function_Overview.png) | Lambda configuration evidence |
+
+## 10. Technologies Used
+
 - AWS Cloud
 - Python
 - Boto3
@@ -59,6 +91,13 @@ The project demonstrates an automated, serverless document notification workflow
 - AWS Lambda
 - Amazon SNS
 - Amazon CloudWatch
+- GitHub
 
-## GitHub Repository
-https://github.com/poojasri515/smart-document-management-system
+## 11. Conclusion
+
+This project demonstrates how serverless AWS services can be integrated to build a cloud-based document notification workflow. It combines object storage, event-driven processing and email notifications, reducing the need for manual upload monitoring.
+
+## 12. GitHub Repository
+
+[Smart Document Management System](https://github.com/poojasri515/smart-document-management-system)
+
